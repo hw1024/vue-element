@@ -1,7 +1,7 @@
 import { constantRoutes } from '@/router'
 import { apiRouters } from '@/api/login'
 import Layout from '@/views/layout/index'
-import ParentView from '@/components/ParentView';
+import ParentView from '@/views/SubMenu';
 
 const permission = {
   state: {

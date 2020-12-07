@@ -1,23 +1,22 @@
-<!-- @author ruoyi 20201128 支持三级以上菜单缓存 -->
 <template>
-  <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
-      <keep-alive :max="20" :exclude="notCacheName">
-        <router-view :key="key" />
+  <section class='app-main'>
+    <transition name='fade-transform' mode='out-in'>
+      <keep-alive :max='20' :exclude='notCacheName'>
+        <router-view :key='key' />
       </keep-alive>
     </transition>
   </section>
 </template>
 
 <script>
-import Global from "@/views/layout/components/global.js";
+import Global from '@/views/layout/components/global.js';
 
 export default {
   name: 'AppMain',
   computed: {
     notCacheName() {
-      var visitedViews = this.$store.state.tagsView.visitedViews;
-      var noCacheViews = [];
+      let visitedViews = this.$store.state.tagsView.visitedViews;
+      let noCacheViews = [];
       Object.keys(visitedViews).some((index) => {
         if (visitedViews[index].meta.noCache) {
           noCacheViews.push(visitedViews[index].name);
@@ -31,7 +30,7 @@ export default {
   },
   mounted() {
     // 关闭标签触发
-    Global.$on("removeCache", (name, view) => {
+    Global.$on('removeCache', (name, view) => {
       this.removeCache(name, view);
     });
   },
@@ -56,7 +55,7 @@ export default {
       if (!vnode) return false;
       let componentInstance = vnode.parent.componentInstance;
       // 这个key是用来获取前缀用来后面正则匹配用的
-      let keyStart = vnode.key.split("/")[0];
+      let keyStart = vnode.key.split('/')[0];
       let thisKey = `${keyStart}${view.fullPath}`;
       let regKey = `${keyStart}${view.path}`;
 
@@ -109,7 +108,7 @@ export default {
     // 刷新单个缓存
     refreshSelectedTag({ componentInstance, thisKey }) {
       Object.keys(componentInstance.cache).forEach((key, index) => {
-        if (null != thisKey && key.replace("/redirect", "") == thisKey) {
+        if (null != thisKey && key.replace('/redirect', '') == thisKey) {
           // 1 销毁实例(这里存在多个key指向一个缓存的情况可能前面一个已经清除掉了所有要加判断)
           if (componentInstance.cache[key]) {
             componentInstance.cache[key].componentInstance.$destroy();
@@ -125,7 +124,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .app-main {
   /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
@@ -150,7 +149,7 @@ export default {
 }
 </style>
 
-<style lang="scss">
+<style lang='scss'>
 // fix css style bug in open el-dialog
 .el-popup-parent--hidden {
   .fixed-header {

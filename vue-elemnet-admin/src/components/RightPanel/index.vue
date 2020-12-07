@@ -24,22 +24,6 @@ export default {
       type: Number
     }
   },
-  computed: {
-    show: {
-      get() {
-        return this.$store.state.settings.showSettings
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'showSettings',
-          value: val
-        })
-      }
-    },
-    theme() {
-      return this.$store.state.settings.theme
-    },
-  },
   watch: {
     show(value) {
       if (value && !this.clickNotClose) {

@@ -9,8 +9,6 @@
         <el-dropdown-item :disabled="language==='en-US'" command="en-US">English</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <img alt="Vue logo" src="../assets/logo.png">
-    {{permission_routes}}
     <el-row>
       <el-button><h3 class="title">{{ $t('login.title') }}</h3></el-button>
       <el-button type="primary">主要按钮</el-button>
@@ -23,15 +21,12 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-
   export default {
     name: 'Home',
     computed: {
       language() {
         return this.$store.getters.language
-      },
-      ...mapGetters(["permission_routes", "sidebar"]),
+      }
     },
     methods: {
       handleSetLanguage(lang) {
