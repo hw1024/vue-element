@@ -2,7 +2,7 @@
   <div class="home">
     <el-dropdown trigger="click" class="international" @command="handleSetLanguage">
       <span class="el-dropdown-link">
-        下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+        下拉菜单<em class="el-icon-arrow-down el-icon--right"></em>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item :disabled="language==='zh-CN'" command="zh-CN">中文</el-dropdown-item>

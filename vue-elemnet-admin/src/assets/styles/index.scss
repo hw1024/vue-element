@@ -1,3 +1,4 @@
+@import './_reset.scss';
 @import './_mixin.scss';
 
 
@@ -59,6 +60,10 @@ div:focus {
 
 .fl {
   float: left;
+}
+
+.alg-c {
+  text-align: center;
 }
 
 .pr-5 {

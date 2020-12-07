@@ -1,5 +1,9 @@
 /**
- * 存储localStorage
+ * @desc 存储localStorage
+ * @author hw
+ * @param {String} [name]    -  存储Key
+ * @param {String} [content]    -  存储内容
+ * @date 2020-12-06
  */
 export const setStore = (name, content) => {
   if (!name) return;
@@ -10,7 +14,10 @@ export const setStore = (name, content) => {
 };
 
 /**
- * 获取localStorage
+ * @desc 获取localStorage
+ * @author hw
+ * @param {String} [name]    -  存储Key
+ * @date 2020-12-06
  */
 export const getStore = name => {
   if (!name) return;
@@ -18,7 +25,10 @@ export const getStore = name => {
 };
 
 /**
- * 删除localStorage
+ * @desc 删除localStorage
+ * @author hw
+ * @param {String} [name]    -  存储Key
+ * @date 2020-12-06
  */
 export const removeStore = name => {
   if (!name) return;

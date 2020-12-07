@@ -14,14 +14,24 @@ const privateKey = 'MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAqhHyZfSsYour
   'YhovyloRYsM+IS9h/0BzlEAuO0ktMQIgSPT3aFAgJYwKpqRYKlLDVcflZFCKY7u3\n' +
   'UP8iWi1Qw0Y=';
 
-// 加密
+/**
+ * @desc 加密
+ * @author hw
+ * @param {String} [txt]    -  要加密的数据
+ * @date 2020-12-06
+ */
 export function encrypt(txt) {
   const encryptor = new JSEncrypt();
   encryptor.setPublicKey(publicKey); // 设置公钥
   return encryptor.encrypt(txt) // 对数据进行加密
 }
 
-// 解密
+/**
+ * @desc 解密
+ * @author hw
+ * @param {String} [txt]    -  要解密的数据
+ * @date 2020-12-06
+ */
 export function decrypt(txt) {
   const encryptor = new JSEncrypt();
   encryptor.setPrivateKey(privateKey); // 设置私钥
