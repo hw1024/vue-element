@@ -6,11 +6,11 @@
  * @date 2020-12-06
  */
 export const setStore = (name, content) => {
-  if (!name) return;
-  if (typeof content !== 'string') {
-    content = JSON.stringify(content);
-  }
-  window.localStorage.setItem(name, content);
+    if (!name) return;
+    if (typeof content !== 'string') {
+        content = JSON.stringify(content);
+    }
+    window.localStorage.setItem(name, content);
 };
 
 /**
@@ -20,8 +20,8 @@ export const setStore = (name, content) => {
  * @date 2020-12-06
  */
 export const getStore = name => {
-  if (!name) return;
-  return window.localStorage.getItem(name);
+    if (!name) return;
+    return window.localStorage.getItem(name);
 };
 
 /**
@@ -31,6 +31,6 @@ export const getStore = name => {
  * @date 2020-12-06
  */
 export const removeStore = name => {
-  if (!name) return;
-  window.localStorage.removeItem(name);
+    if (!name) return;
+    window.localStorage.removeItem(name);
 };

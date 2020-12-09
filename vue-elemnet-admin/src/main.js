@@ -12,14 +12,14 @@ import './permission' // permission control
 import './mock';   //引入mock.js模拟数据
 
 Vue.use(ElementUI, {
-  i18n: (key, value) => i18n.t(key, value)
+    i18n: (key, value) => i18n.t(key, value)
 });
 
 Vue.config.productionTip = false;
 
 new Vue({
-  router,
-  i18n,
-  store,
-  render: h => h(App)
+    router,
+    i18n,
+    store,
+    render: h => h(App)
 }).$mount('#app');

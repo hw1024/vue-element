@@ -1,14 +1,14 @@
 <template>
-  <router-view :key='key'></router-view>
+    <router-view :key='key'></router-view>
 </template>
 
 <script>
-  export default {
-    name: 'SubMenu',
-    computed: {
-      key() {
-        return this.$route.fullPath
-      }
+    export default {
+        name: 'SubMenu',
+        computed: {
+            key() {
+                return this.$route.fullPath
+            }
+        }
     }
-  }
 </script>

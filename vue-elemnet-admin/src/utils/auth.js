@@ -9,7 +9,7 @@ const TOKEN_KEY = 'accessToken';
  * @date 2020-12-06
  */
 export function setToken(token) {
-  return setStore(TOKEN_KEY, token, {expires: 1})
+    return setStore(TOKEN_KEY, token, {expires: 1})
 }
 
 /**
@@ -18,9 +18,9 @@ export function setToken(token) {
  * @date 2020-12-06
  */
 export function getToken() {
-  const token = getStore(TOKEN_KEY);
-  if (token) return token;
-  else return false;
+    const token = getStore(TOKEN_KEY);
+    if (token) return token;
+    else return false;
 }
 
 /**
@@ -29,5 +29,5 @@ export function getToken() {
  * @date 2020-12-06
  */
 export function removeToken() {
-  return removeStore(TOKEN_KEY)
+    return removeStore(TOKEN_KEY)
 }

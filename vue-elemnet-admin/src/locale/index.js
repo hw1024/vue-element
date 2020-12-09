@@ -7,20 +7,21 @@ import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN';
 import {getStore} from '@/utils/storage';
 
 Vue.use(VueI18n);
-Vue.locale = () => {};
+Vue.locale = () => {
+};
 
 // 设置语言 选项 en | zh
-const locale =  getStore('language') || 'zh-CN';
+const locale = getStore('language') || 'zh-CN';
 // 加载语言环境
 const messages = {
-  'en-US': Object.assign(enUS, elementEnLocale),
-  'zh-CN': Object.assign(zhCN, elementZhLocale),
+    'en-US': Object.assign(enUS, elementEnLocale),
+    'zh-CN': Object.assign(zhCN, elementZhLocale),
 };
 
 const i18n = new VueI18n({
-  locale,
-  messages,
-  silentTranslationWarn: true
+    locale,
+    messages,
+    silentTranslationWarn: true
 });
 
 export default i18n;
