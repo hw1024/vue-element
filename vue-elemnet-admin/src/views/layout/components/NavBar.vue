@@ -1,26 +1,14 @@
 <template>
-    <div class='navbar'>
+    <div class='nav-bar'>
         <hamburger id='hamburger-container' :is-active='sidebar.opened' class='hamburger-container'
                    @toggleClick='toggleSideBar'/>
-        <breadcrumb id='breadcrumb-container' class='breadcrumb-container'/>
+        <breadcrumb v-if='whetherBreadcrumb' id='breadcrumb-container' class='breadcrumb-container'/>
         <div class='right-menu'>
             <template v-if='device!=="mobile"'>
                 <screen-full v-if='whetherScreenFull' class='right-menu-item hover-effect'></screen-full>
             </template>
             <dr-lang-select v-if='whetherLangSelect' class='right-menu-item hover-effect'></dr-lang-select>
-            <el-dropdown class='avatar-container right-menu-item hover-effect' trigger='hover'>
-                <div class='avatar-wrapper'>
-                    <dr-svg-icon :icon-class='"user"'></dr-svg-icon>
-                </div>
-                <el-dropdown-menu slot='dropdown'>
-                    <router-link to='/user/profile'>
-                        <el-dropdown-item>个人中心</el-dropdown-item>
-                    </router-link>
-                    <el-dropdown-item divided @click.native='logout'>
-                        <span>退出登录</span>
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+            <user-info/>
         </div>
     </div>
 </template>
@@ -30,11 +18,11 @@
     import Hamburger from './Hamburger'
     import Breadcrumb from './Breadcrumb'
     import ScreenFull from './ScreenFull'
-    import DrLangSelect from "@/components/global/DrLangSelect";
+    import UserInfo from './UserInfo'
 
     export default {
         components: {
-            DrLangSelect,
+            UserInfo,
             Breadcrumb,
             Hamburger,
             ScreenFull
@@ -43,41 +31,21 @@
             ...mapState({
                 sidebar: state => state.app.sidebar,
                 device: state => state.app.device,
+                whetherBreadcrumb: state => state.settings.whetherBreadcrumb,
                 whetherScreenFull: state => state.settings.whetherScreenFull,
-                whetherLangSelect: state => state.settings.whetherLangSelect,
-                needTagsView: state => state.settings.tagsView,
-                fixedHeader: state => state.settings.fixedHeader
+                whetherLangSelect: state => state.settings.whetherLangSelect
             }),
-            classObj() {
-                return {
-                    hideSidebar: !this.sidebar.opened,
-                    openSidebar: this.sidebar.opened,
-                    withoutAnimation: this.sidebar.withoutAnimation,
-                    mobile: this.device === 'mobile'
-                }
-            }
         },
         methods: {
             toggleSideBar() {
                 this.$store.dispatch('toggleSideBar')
-            },
-            async logout() {
-                this.$confirm('确定注销并退出系统吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$store.dispatch('LogOut').then(() => {
-                        location.href = '/index';
-                    })
-                })
             }
         }
     }
 </script>
 
 <style lang='scss' scoped>
-    .navbar {
+    .nav-bar {
         height: 50px;
         overflow: hidden;
         position: relative;
@@ -129,29 +97,6 @@
 
                     &:hover {
                         background: rgba(0, 0, 0, .025)
-                    }
-                }
-            }
-
-            .avatar-container {
-                margin-right: 30px;
-
-                .avatar-wrapper {
-                    position: relative;
-
-                    .user-avatar {
-                        cursor: pointer;
-                        width: 40px;
-                        height: 40px;
-                        border-radius: 10px;
-                    }
-
-                    .el-icon-caret-bottom {
-                        cursor: pointer;
-                        position: absolute;
-                        right: -20px;
-                        top: 25px;
-                        font-size: 12px;
                     }
                 }
             }

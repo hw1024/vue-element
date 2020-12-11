@@ -3,6 +3,7 @@ module.exports = {
   env: {
     node: true
   },
+  'no-shadow': ["error",{ "allow": ["state"] }],
   extends: ["plugin:vue/essential"],
   // extends: ["plugin:vue/essential", "@vue/prettier"],
   rules: {

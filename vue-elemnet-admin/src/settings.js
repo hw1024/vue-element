@@ -12,6 +12,11 @@ module.exports = {
     whetherLangSelect: process.env.NODE_ENV === 'development',
 
     /**
+     * 是否显示面包屑
+     */
+    whetherBreadcrumb: process.env.NODE_ENV === 'development',
+
+    /**
      * 是否显示 tagsView
      */
     tagsView: true,

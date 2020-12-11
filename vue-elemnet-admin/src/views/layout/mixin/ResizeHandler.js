@@ -1,7 +1,7 @@
 import store from '@/store'
 
-const {body} = document
-const WIDTH = 992 // refer to Bootstrap's responsive design
+const {body} = document;
+const WIDTH = 992;
 
 export default {
     watch: {
@@ -12,31 +12,28 @@ export default {
         }
     },
     beforeMount() {
-        window.addEventListener('resize', this.$_resizeHandler)
+        window.addEventListener('resize', this.resizeHandler)
     },
     beforeDestroy() {
-        window.removeEventListener('resize', this.$_resizeHandler)
+        window.removeEventListener('resize', this.resizeHandler)
     },
     mounted() {
-        const isMobile = this.$_isMobile();
-        if (isMobile) {
+        const isPhone = this.isMobile();
+        if (isPhone) {
             store.dispatch('toggleDevice', 'mobile');
             store.dispatch('closeSideBar', {withoutAnimation: true})
         }
     },
     methods: {
-        // use $_ for mixins properties
-        // https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
-        $_isMobile() {
-            const rect = body.getBoundingClientRect()
+        isMobile() {
+            const rect = body.getBoundingClientRect();
             return rect.width - 1 < WIDTH
         },
-        $_resizeHandler() {
+        resizeHandler() {
             if (!document.hidden) {
-                const isMobile = this.$_isMobile()
-                store.dispatch('toggleDevice', isMobile ? 'mobile' : 'desktop');
-
-                if (isMobile) {
+                const isPhone = this.isMobile();
+                store.dispatch('toggleDevice', isPhone ? 'mobile' : 'desktop');
+                if (isPhone) {
                     store.dispatch('closeSideBar', {withoutAnimation: true})
                 }
             }

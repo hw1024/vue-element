@@ -2,7 +2,7 @@
     <section class='app-main'>
         <transition name='fade-transform' mode='out-in'>
             <keep-alive :max='20' :exclude='notCacheName'>
-                <router-view :key='key'/>
+                <router-view :key='key'></router-view>
             </keep-alive>
         </transition>
     </section>
@@ -29,7 +29,6 @@
             },
         },
         mounted() {
-            // 关闭标签触发
             Global.$on('removeCache', (name, view) => {
                 this.removeCache(name, view);
             });
@@ -38,7 +37,7 @@
             // 获取有keep-alive子节点的Vnode
             getVnode() {
                 // 判断子集非空
-                if (this.$children.length == 0) return false;
+                if (this.$children.length === 0) return false;
                 let vnode;
                 for (let item of this.$children) {
                     // 如果data中有key则代表找到了keep-alive下面的子集，这个key就是router-view上的key

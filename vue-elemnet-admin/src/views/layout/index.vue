@@ -32,8 +32,8 @@
             ...mapState({
                 sidebar: state => state.app.sidebar,
                 device: state => state.app.device,
-                needTagsView: true,
-                fixedHeader: true
+                needTagsView: state => state.settings.tagsView,
+                fixedHeader: state => state.settings.fixedHeader,
             }),
             classObj() {
                 return {

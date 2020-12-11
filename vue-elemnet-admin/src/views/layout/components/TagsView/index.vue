@@ -1,25 +1,25 @@
 <template>
-    <div id="tags-view-container" class="tags-view-container">
-        <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
+    <div id='tags-view-container' class='tags-view-container'>
+        <scroll-pane ref='scrollPane' class='tags-view-wrapper' @scroll='handleScroll'>
             <router-link
-                v-for="tag in visitedViews"
-                ref="tag"
-                :key="tag.path"
-                :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-                tag="span"
-                class="tags-view-item"
-                @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
-                @contextmenu.prevent.native="openMenu(tag,$event)"
+                v-for='tag in visitedViews'
+                ref='tag'
+                :key='tag.path'
+                :to='{ path: tag.path, query: tag.query, fullPath: tag.fullPath }'
+                tag='span'
+                class='tags-view-item'
+                @click.middle.native='!isAffix(tag)?closeSelectedTag(tag):""'
+                @contextmenu.prevent.native='openMenu(tag,$event)'
             >
                 {{ tag.title }}
-                <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+                <span v-if='!isAffix(tag)' class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
             </router-link>
         </scroll-pane>
-        <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li @click="refreshSelectedTag(selectedTag)">刷新页面</li>
-            <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭当前</li>
-            <li @click="closeOthersTags">关闭其他</li>
-            <li @click="closeAllTags(selectedTag)">关闭所有</li>
+        <ul v-show='visible' :style='{left:left+"px",top:top+"px"}' class='contextmenu'>
+            <li @click='refreshSelectedTag(selectedTag)'>刷新页面</li>
+            <li v-if='!isAffix(selectedTag)' @click='closeSelectedTag(selectedTag)'>关闭当前</li>
+            <li @click='closeOthersTags'>关闭其他</li>
+            <li @click='closeAllTags(selectedTag)'>关闭所有</li>
         </ul>
     </div>
 </template>
@@ -27,7 +27,7 @@
 <script>
     import ScrollPane from './ScrollPane'
     import path from 'path'
-    import Global from "@/views/layout/components/global.js";
+    import Global from '@/views/layout/components/global.js';
 
     export default {
         components: {ScrollPane},
@@ -70,10 +70,10 @@
                 return tag.meta && tag.meta.affix
             },
             filterAffixTags(routes, basePath = '/') {
-                let tags = []
+                let tags = [];
                 routes.forEach(route => {
                     if (route.meta && route.meta.affix) {
-                        const tagPath = path.resolve(basePath, route.path)
+                        const tagPath = path.resolve(basePath, route.path);
                         tags.push({
                             fullPath: tagPath,
                             path: tagPath,
@@ -82,37 +82,35 @@
                         })
                     }
                     if (route.children) {
-                        const tempTags = this.filterAffixTags(route.children, route.path)
+                        const tempTags = this.filterAffixTags(route.children, route.path);
                         if (tempTags.length >= 1) {
                             tags = [...tags, ...tempTags]
                         }
                     }
-                })
+                });
                 return tags
             },
             initTags() {
-                const affixTags = this.affixTags = this.filterAffixTags(this.routes)
+                const affixTags = this.affixTags = this.filterAffixTags(this.routes);
                 for (const tag of affixTags) {
-                    // Must have tag name
                     if (tag.name) {
                         this.$store.dispatch('tagsView/addVisitedView', tag)
                     }
                 }
             },
             addTags() {
-                const {name} = this.$route
+                const {name} = this.$route;
                 if (name) {
                     this.$store.dispatch('tagsView/addView', this.$route)
                 }
                 return false
             },
             moveToCurrentTag() {
-                const tags = this.$refs.tag
+                const tags = this.$refs.tag;
                 this.$nextTick(() => {
                     for (const tag of tags) {
                         if (tag.to.path === this.$route.path) {
-                            this.$refs.scrollPane.moveToTarget(tag)
-                            // when query is different then update
+                            this.$refs.scrollPane.moveToTarget(tag);
                             if (tag.to.fullPath !== this.$route.fullPath) {
                                 this.$store.dispatch('tagsView/updateVisitedView', this.$route)
                             }
@@ -121,43 +119,55 @@
                     }
                 })
             },
+            /**
+             * @desc 刷新当前选择中页面
+             */
             refreshSelectedTag(view) {
                 this.$store.dispatch('tagsView/delCachedView', view).then(() => {
-                    const {fullPath} = view
+                    const {fullPath} = view;
                     this.$nextTick(() => {
                         this.$router.replace({
                             path: '/redirect' + fullPath
                         })
                     })
-                })
-                Global.$emit("removeCache", "refreshSelectedTag", this.selectedTag);
+                });
+                Global.$emit('removeCache', 'refreshSelectedTag', this.selectedTag);
             },
+            /**
+             * @desc 关闭当前选择中页面
+             */
             closeSelectedTag(view) {
                 this.$store.dispatch('tagsView/delView', view).then(({visitedViews}) => {
                     if (this.isActive(view)) {
                         this.toLastView(visitedViews, view)
                     }
-                })
-                Global.$emit("removeCache", "closeSelectedTag", view);
+                });
+                Global.$emit('removeCache', 'closeSelectedTag', view);
             },
+            /**
+             * @desc 关闭其他
+             */
             closeOthersTags() {
-                this.$router.push(this.selectedTag)
+                this.$router.push(this.selectedTag);
                 this.$store.dispatch('tagsView/delOthersViews', this.selectedTag).then(() => {
                     this.moveToCurrentTag()
-                })
-                Global.$emit("removeCache", "closeOthersTags", this.selectedTag);
+                });
+                Global.$emit('removeCache', 'closeOthersTags', this.selectedTag);
             },
+            /**
+             * @desc 关闭所有页面
+             */
             closeAllTags(view) {
                 this.$store.dispatch('tagsView/delAllViews').then(({visitedViews}) => {
                     if (this.affixTags.some(tag => tag.path === this.$route.path)) {
                         return
                     }
                     this.toLastView(visitedViews, view)
-                })
-                Global.$emit("removeCache", "closeAllTags");
+                });
+                Global.$emit('removeCache', 'closeAllTags');
             },
             toLastView(visitedViews, view) {
-                const latestView = visitedViews.slice(-1)[0]
+                const latestView = visitedViews.slice(-1)[0];
                 if (latestView) {
                     this.$router.push(latestView.fullPath)
                 } else {
@@ -172,11 +182,11 @@
                 }
             },
             openMenu(tag, e) {
-                const menuMinWidth = 105
-                const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
-                const offsetWidth = this.$el.offsetWidth // container width
-                const maxLeft = offsetWidth - menuMinWidth // left boundary
-                const left = e.clientX - offsetLeft + 15 // 15: margin right
+                const menuMinWidth = 105;
+                const offsetLeft = this.$el.getBoundingClientRect().left;
+                const offsetWidth = this.$el.offsetWidth;
+                const maxLeft = offsetWidth - menuMinWidth ;
+                const left = e.clientX - offsetLeft + 15 ;
 
                 if (left > maxLeft) {
                     this.left = maxLeft
@@ -184,8 +194,8 @@
                     this.left = left
                 }
 
-                this.top = e.clientY
-                this.visible = true
+                this.top = e.clientY;
+                this.visible = true;
                 this.selectedTag = tag
             },
             closeMenu() {
@@ -198,7 +208,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
     .tags-view-container {
         height: 34px;
         width: 100%;
@@ -274,8 +284,7 @@
     }
 </style>
 
-<style lang="scss">
-    //reset element css of el-icon-close
+<style lang='scss'>
     .tags-view-wrapper {
         .tags-view-item {
             .el-icon-close {

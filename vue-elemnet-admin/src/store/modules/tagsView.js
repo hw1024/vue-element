@@ -1,3 +1,4 @@
+/* eslint no-shadow: ["error",{ "allow": ["state"] }]*/
 const state = {
     visitedViews: [],
     cachedViews: []
@@ -63,7 +64,7 @@ const mutations = {
             }
         }
     }
-}
+};
 
 const actions = {
     addView({dispatch}, view) {

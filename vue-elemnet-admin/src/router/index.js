@@ -25,6 +25,17 @@ import Layout from '@/views/layout'
  */
 export const constantRoutes = [
     {
+        path: '/redirect',
+        component: Layout,
+        hidden: true,
+        children: [
+            {
+                path: '/redirect/:path(.*)',
+                component: (resolve) => require(['@/views/redirect'], resolve)
+            }
+        ]
+    },
+    {
         path: '/login',
         component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
         hidden: true

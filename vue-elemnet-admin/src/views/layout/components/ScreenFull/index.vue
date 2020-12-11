@@ -1,6 +1,6 @@
 <template>
     <div>
-        <dr-svg-icon :icon-class='isFullscreen?"exit-fullscreen":"fullscreen"' @click='click'></dr-svg-icon>
+        <dr-svg-icon :icon-class='isFullscreen?"exit-fullscreen":"fullscreen"' @click='fullScreenClick'></dr-svg-icon>
     </div>
 </template>
 
@@ -21,7 +21,18 @@
             this.destroy()
         },
         methods: {
-            click() {
+            /**
+             * @desc 全屏方法页面初始化
+             */
+            init() {
+                if (screenFull.isEnabled) {
+                    screenFull.on('change', this.screenChange)
+                }
+            },
+            /**
+             * @desc 全屏显示按钮点击方法
+             */
+            fullScreenClick() {
                 if (!screenFull.isEnabled) {
                     this.$message({
                         message: 'you browser can not work',
@@ -31,17 +42,18 @@
                 }
                 screenFull.toggle()
             },
-            change() {
+            /**
+             * @desc 全屏效果切换方法
+             */
+            screenChange() {
                 this.isFullscreen = screenFull.isFullscreen
             },
-            init() {
-                if (screenFull.isEnabled) {
-                    screenFull.on('change', this.change)
-                }
-            },
+            /**
+             * @desc 页面销毁清除全屏效果
+             */
             destroy() {
                 if (screenFull.isEnabled) {
-                    screenFull.off('change', this.change)
+                    screenFull.off('change', this.screenChange)
                 }
             }
         }
