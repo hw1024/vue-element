@@ -1,8 +1,8 @@
 <template>
     <div :class='classObj' class='app-wrapper'>
         <div v-if='device==="mobile"&&sidebar.opened' class='drawer-bg' @click='handleClickOutside'></div>
-        <sidebar class='sidebar-container'/>
-        <div :class='{hasTagsView:needTagsView}' class='main-container'>
+        <sidebar v-if='device==="mobile" || navMenuMode === "vertical"' class='sidebar-container'/>
+        <div :class='{hasTagsView:needTagsView}' class='main-container' :style='{"margin-left": navMenuMode === "vertical" ? "200px": "0"}'>
             <div :class='{"fixed-header":fixedHeader}'>
                 <nav-bar/>
                 <tags-view v-if='needTagsView'/>
@@ -32,6 +32,7 @@
             ...mapState({
                 sidebar: state => state.app.sidebar,
                 device: state => state.app.device,
+                navMenuMode: state => state.settings.navMenuMode,
                 needTagsView: state => state.settings.tagsView,
                 fixedHeader: state => state.settings.fixedHeader,
             }),

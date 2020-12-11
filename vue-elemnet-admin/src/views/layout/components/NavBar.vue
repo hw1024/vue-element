@@ -1,8 +1,16 @@
 <template>
     <div class='nav-bar'>
-        <hamburger id='hamburger-container' :is-active='sidebar.opened' class='hamburger-container'
-                   @toggleClick='toggleSideBar'/>
-        <breadcrumb v-if='whetherBreadcrumb' id='breadcrumb-container' class='breadcrumb-container'/>
+        <div v-if='device==="mobile" || navMenuMode === "vertical"'>
+            <hamburger id='hamburger-container' :is-active='sidebar.opened' class='hamburger-container'
+                       @toggleClick='toggleSideBar'/>
+            <breadcrumb v-if='whetherBreadcrumb' id='breadcrumb-container' class='breadcrumb-container'/>
+        </div>
+        <template v-else>
+            <div class='risk-logo'>
+                <img :src='logo' height='40px' alt='maxLogoKey'/>
+            </div>
+            <nav-menu ref='navMenu'></nav-menu>
+        </template>
         <div class='right-menu'>
             <template v-if='device!=="mobile"'>
                 <screen-full v-if='whetherScreenFull' class='right-menu-item hover-effect'></screen-full>
@@ -15,22 +23,31 @@
 
 <script>
     import {mapState} from 'vuex'
+    import logoImg from '@/assets/images/logo.png';
+    import UserInfo from './UserInfo'
+    import NavMenu from './NavMenu'
     import Hamburger from './Hamburger'
     import Breadcrumb from './Breadcrumb'
     import ScreenFull from './ScreenFull'
-    import UserInfo from './UserInfo'
 
     export default {
         components: {
             UserInfo,
+            NavMenu,
             Breadcrumb,
             Hamburger,
             ScreenFull
+        },
+        data() {
+            return {
+                logo: logoImg
+            }
         },
         computed: {
             ...mapState({
                 sidebar: state => state.app.sidebar,
                 device: state => state.app.device,
+                navMenuMode: state => state.settings.navMenuMode,
                 whetherBreadcrumb: state => state.settings.whetherBreadcrumb,
                 whetherScreenFull: state => state.settings.whetherScreenFull,
                 whetherLangSelect: state => state.settings.whetherLangSelect
@@ -46,6 +63,8 @@
 
 <style lang='scss' scoped>
     .nav-bar {
+        display: flex;
+        justify-content: space-between;
         height: 50px;
         overflow: hidden;
         position: relative;

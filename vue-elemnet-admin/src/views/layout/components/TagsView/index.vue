@@ -9,13 +9,13 @@
                 tag='span'
                 class='tags-view-item'
                 @click.middle.native='!isAffix(tag)?closeSelectedTag(tag):""'
-                @contextmenu.prevent.native='openMenu(tag,$event)'
+                @contextmenu.prevent.native='openTagsMenu(tag,$event)'
             >
                 {{ tag.title }}
                 <span v-if='!isAffix(tag)' class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
             </router-link>
         </scroll-pane>
-        <ul v-show='visible' :style='{left:left+"px",top:top+"px"}' class='contextmenu'>
+        <ul v-show='contextMenuVisible' :style='{left:contextLeft+"px",top:contextTop+"px"}' class='contextmenu'>
             <li @click='refreshSelectedTag(selectedTag)'>刷新页面</li>
             <li v-if='!isAffix(selectedTag)' @click='closeSelectedTag(selectedTag)'>关闭当前</li>
             <li @click='closeOthersTags'>关闭其他</li>
@@ -25,17 +25,17 @@
 </template>
 
 <script>
-    import ScrollPane from './ScrollPane'
     import path from 'path'
+    import ScrollPane from './ScrollPane'
     import Global from '@/views/layout/components/global.js';
 
     export default {
         components: {ScrollPane},
         data() {
             return {
-                visible: false,
-                top: 0,
-                left: 0,
+                contextMenuVisible: false,
+                contextTop: 0,
+                contextLeft: 0,
                 selectedTag: {},
                 affixTags: []
             }
@@ -53,11 +53,11 @@
                 this.addTags();
                 this.moveToCurrentTag()
             },
-            visible(value) {
+            contextMenuVisible(value) {
                 if (value) {
-                    document.body.addEventListener('click', this.closeMenu)
+                    document.body.addEventListener('click', this.closeTagsMenu)
                 } else {
-                    document.body.removeEventListener('click', this.closeMenu)
+                    document.body.removeEventListener('click', this.closeTagsMenu)
                 }
             }
         },
@@ -66,9 +66,20 @@
             this.addTags()
         },
         methods: {
-            isAffix(tag) {
-                return tag.meta && tag.meta.affix
+            /**
+             * @desc 初始化标签页
+             */
+            initTags() {
+                const affixTags = this.affixTags = this.filterAffixTags(this.routes);
+                for (const tag of affixTags) {
+                    if (tag.name) {
+                        this.$store.dispatch('tagsView/addVisitedView', tag)
+                    }
+                }
             },
+            /**
+             * @desc 过滤标签页
+             */
             filterAffixTags(routes, basePath = '/') {
                 let tags = [];
                 routes.forEach(route => {
@@ -90,14 +101,15 @@
                 });
                 return tags
             },
-            initTags() {
-                const affixTags = this.affixTags = this.filterAffixTags(this.routes);
-                for (const tag of affixTags) {
-                    if (tag.name) {
-                        this.$store.dispatch('tagsView/addVisitedView', tag)
-                    }
-                }
+            /**
+             * @desc 判断是否为当前页面的标签页
+             */
+            isAffix(tag) {
+                return tag.meta && tag.meta.affix
             },
+            /**
+             * @desc 新增标签页
+             */
             addTags() {
                 const {name} = this.$route;
                 if (name) {
@@ -105,8 +117,12 @@
                 }
                 return false
             },
+            /**
+             * @desc 关闭其他标签页
+             */
             moveToCurrentTag() {
                 const tags = this.$refs.tag;
+                console.log(tags);
                 this.$nextTick(() => {
                     for (const tag of tags) {
                         if (tag.to.path === this.$route.path) {
@@ -118,6 +134,32 @@
                         }
                     }
                 })
+            },
+            /**
+             * @desc 打开右键菜单方法
+             */
+            openTagsMenu(tag, e) {
+                const menuMinWidth = 105;
+                const offsetLeft = this.$el.getBoundingClientRect().left;
+                const offsetWidth = this.$el.offsetWidth;
+                const maxLeft = offsetWidth - menuMinWidth;
+                const left = e.clientX - offsetLeft + 15;
+                this.contextLeft = left > maxLeft ? maxLeft : left; // 设置右键菜单显示距离左侧距离
+                this.contextTop = e.clientY;  // 设置右键菜单显示距离顶部距离
+                this.selectedTag = tag;  // 设置当前选中的tag页
+                this.contextMenuVisible = true;
+            },
+            /**
+             * @desc 关闭右键菜单方法
+             */
+            closeTagsMenu() {
+                this.contextMenuVisible = false
+            },
+            /**
+             * @desc tags标签页滑动回调方法，滑动时关闭右键菜单
+             */
+            handleScroll() {
+                this.closeTagsMenu()
             },
             /**
              * @desc 刷新当前选择中页面
@@ -171,39 +213,13 @@
                 if (latestView) {
                     this.$router.push(latestView.fullPath)
                 } else {
-                    // now the default is to redirect to the home page if there is no tags-view,
-                    // you can adjust it according to your needs.
                     if (view.name === 'Dashboard') {
-                        // to reload home page
                         this.$router.replace({path: '/redirect' + view.fullPath})
                     } else {
                         this.$router.push('/')
                     }
                 }
             },
-            openMenu(tag, e) {
-                const menuMinWidth = 105;
-                const offsetLeft = this.$el.getBoundingClientRect().left;
-                const offsetWidth = this.$el.offsetWidth;
-                const maxLeft = offsetWidth - menuMinWidth ;
-                const left = e.clientX - offsetLeft + 15 ;
-
-                if (left > maxLeft) {
-                    this.left = maxLeft
-                } else {
-                    this.left = left
-                }
-
-                this.top = e.clientY;
-                this.visible = true;
-                this.selectedTag = tag
-            },
-            closeMenu() {
-                this.visible = false
-            },
-            handleScroll() {
-                this.closeMenu()
-            }
         }
     }
 </script>

@@ -1,13 +1,13 @@
-
 import defaultSettings from '@/settings'
 
-const {whetherScreenFull, whetherLangSelect, whetherBreadcrumb, title, tagsView, fixedHeader, sidebarLogo} = defaultSettings;
+const {whetherScreenFull, whetherLangSelect, whetherBreadcrumb, navMenuMode, title, tagsView, fixedHeader, sidebarLogo} = defaultSettings;
 
 const state = {
     title: title,
     whetherLangSelect: whetherLangSelect,
     whetherScreenFull: whetherScreenFull,
     whetherBreadcrumb: whetherBreadcrumb,
+    navMenuMode: navMenuMode,
     tagsView: tagsView,
     fixedHeader: fixedHeader,
     sidebarLogo: sidebarLogo
