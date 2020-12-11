@@ -8,3 +8,31 @@
     line-height: 50px;
 }
 
+.el-menu--horizontal .sub-item {
+    float: left;
+}
+
+.el-menu--horizontal .sub-item .el-submenu__title {
+    height: 50px;
+    line-height: 50px;
+}
+
+.el-menu--horizontal .sub-item .el-submenu .el-submenu__icon-arrow {
+    position: static;
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-top: -3px;
+}
+
+.el-menu--horizontal .sub-item .el-menu-item {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    margin: 0;
+    border-bottom: 2px solid transparent;
+    color: #909399;
+}
+
+.el-menu--horizontal .sub-item .el-submenu {
+    float: left;
+}

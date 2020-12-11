@@ -2,7 +2,7 @@
     <div :class='classObj' class='app-wrapper'>
         <div v-if='device==="mobile"&&sidebar.opened' class='drawer-bg' @click='handleClickOutside'></div>
         <sidebar v-if='device==="mobile" || navMenuMode === "vertical"' class='sidebar-container'/>
-        <div :class='{hasTagsView:needTagsView}' class='main-container' :style='{"margin-left": navMenuMode === "vertical" ? "200px": "0"}'>
+        <div :class='{hasTagsView:needTagsView}' class='main-container' :style='{"margin-left": navMenuMode === "vertical" ? "": "0"}'>
             <div :class='{"fixed-header":fixedHeader}'>
                 <nav-bar/>
                 <tags-view v-if='needTagsView'/>

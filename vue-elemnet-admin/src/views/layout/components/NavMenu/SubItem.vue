@@ -1,12 +1,12 @@
 <template>
-    <div class='el-menu-item' v-if='!item.hidden'>
+    <div class='sub-item' v-if='!item.hidden'>
         <template
             v-if='hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow'>
-            <el-menu-item :index='resolvePath(onlyOneChild.path)' :class='{"submenu-title-noDropdown":!isNest}'>
-                <app-link v-if='onlyOneChild.meta' :to='resolvePath(onlyOneChild.path)'>
+            <app-link v-if='onlyOneChild.meta' :to='resolvePath(onlyOneChild.path)'>
+                <el-menu-item :index='resolvePath(onlyOneChild.path)' :class='{"submenu-title-noDropdown":!isNest}'>
                     {{onlyOneChild.meta.title}}
-                </app-link>
-            </el-menu-item>
+                </el-menu-item>
+            </app-link>
         </template>
         <el-submenu v-else ref='subMenu' :index='resolvePath(item.path)' popper-append-to-body>
             <template slot='title'>{{item.meta.title}}</template>
